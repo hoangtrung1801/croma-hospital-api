@@ -33,7 +33,7 @@ app.all('*', (req, res, next) =>  {
 // error handler
 app.use(function(err, req, res, next) {
 
-  // render the error page
+  // return error message 
   res.status(err.statusCode || 500);
   res.json({
     status: 'fail',

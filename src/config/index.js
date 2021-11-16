@@ -1,6 +1,6 @@
 module.exports = {
   ROLE: {
-    director: 'director',
+    admin: 'admin',
     dean: 'dean',
     doctor: 'doctor',
     nurse: 'nurse',
