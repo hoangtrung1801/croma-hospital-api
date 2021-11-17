@@ -14,15 +14,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Password is required"] 
   },
-  /* Later */
-  // age: {
-  //   type: Number,
-  //   required: [true, "Please type your age"]
-  // },
-  // address: {
-  //   type: String,
-  //   required: [true, "Please type your address"]
-  // },
+  age: {
+    type: Number,
+    required: [true, "Please type your age"]
+  },
+  address: {
+    type: String,
+    required: [true, "Please type your address"]
+  },
   role: {
     type: String,
     required: true
