@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userRouter = require('./routes/user.route');
 const authRouter = require('./routes/auth.route');
+const patientRouter = require('./routes/patient.route');
 
 const verifyAuthorization = require('./middlewares/verifyAuthorization');
 
@@ -18,5 +19,6 @@ router.get('/', (req, res) => {
 
 router.use('/user', userRouter);
 router.use('/auth', authRouter);
+router.use('/patient', patientRouter);
 
 module.exports = router;

@@ -21,9 +21,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
+/* test */
+const multer  = require('multer');
+const upload = multer({ dest: './uploads' });
 app.get('/', (req, res) => {
-  res.send("Welcome to Croma Hospital");
+  res.sendFile('index.html', {
+    root: __dirname,
+    deny: 'any'
+  })
 })
+
+/* ----------------------- */
 
 app.use('/api', apiRouter);
 
