@@ -8,11 +8,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const apiRouter = require('./api/index');
+const apiDocsRouter = require('./docs/index');
 
 const app = express();
 
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log("Connected to mongodb"));
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,6 +26,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', apiRouter);
+
+// API Documentation
+app.use('/api-docs', apiDocsRouter);
 
 // catch 404 and forward to error handler
 app.all('*', (req, res, next) =>  {
