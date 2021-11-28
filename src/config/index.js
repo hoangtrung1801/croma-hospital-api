@@ -4,7 +4,7 @@ module.exports = {
     dean: 'dean',
     doctor: 'doctor',
     nurse: 'nurse',
-    dispatcher: 'dispatcher',
+    coordinator: 'coordinator',
     patient: 'patient'
   }
 }

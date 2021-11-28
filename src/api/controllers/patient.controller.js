@@ -1,3 +1,4 @@
+const Lobby = require("../../models/Lobby");
 const Patient = require("../../models/Patient");
 
 const examinateMedical = async (req, res, next) => {
@@ -12,6 +13,7 @@ const examinateMedical = async (req, res, next) => {
       ...req.body,
       image: imagePath
     });
+    await Lobby.push({ patient : patient._id});
 
     const data = patient;
     res.status(200).json({
