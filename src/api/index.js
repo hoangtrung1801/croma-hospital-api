@@ -10,7 +10,7 @@ const verifyAuthorization = require('./middlewares/verifyAuthorization');
 
 router.use(verifyAuthorization);
 
-router.get('/', (req, res) => {
+router.get('/', async  (req, res) => {
   let role = 'patient';
   if(res.locals.user) {
     role = res.locals.user.role;

@@ -1,72 +1,60 @@
-const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { nanoid } = require('nanoid');
+const redis = require('redis');
+const redisClient = redis.createClient();
+const commands = require('redis-commands');
 
-const lobbySchema = new Schema({
-  patient: {
-    type: Schema.Types.ObjectId,
-    ref: 'Patient'
-  }
-})
-
-let Lobby = mongoose.model('Lobby', lobbySchema);
+redisClient.on('subscribe', (channel) => console.log("Subscribed " + channel));
 
 class LobbyQueue {
-  constructor(model) {
-    this.model = model;
+  constructor(name) {
+    this.name = name || 'lobby';
+  }
+  get() {
+    return new Promise((resolve, reject) => {
+      redisClient.zrange(this.name, 0, -1, (err, reply) => {
+        if(err) return reject(err);
+        let data = reply.join(',');
+        data = JSON.parse('[' + data + ']');
+        return resolve(data);
+      })
+    })
   }
 
-  async get() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let patientsData = await this.model.find().populate('patient');
-        let patients = patientsData.map(patient => patient.patient);
-        patients.sort((a, b) => {
-          if(a.severity > b.severity) return 1;
-          else return -1;
-        })
+  add(data) {
+    return new Promise((resolve, reject) => {
+      if(typeof data === 'object' && !Array.isArray(data)) {
+        const {severity} = data;
+        // check severity is empty
+        if(!severity) return reject("Patient need enter a severity");
 
-        return resolve(patients);
-      } catch (error) {
-        return reject(error);
+        // add id
+        if(!data._id) {
+          data._id = nanoid();
+        }
+
+        redisClient.zadd(this.name, severity, JSON.stringify(data));
+        return resolve(data);
+      } else {
+        return reject("Need a object");
       }
     })
   }
 
-  async push(data) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const patient = await this.model.create(data);
-  
-        return resolve(patient);
-      } catch(err) {
-        return reject(err);
-      }
-    });
-  }
+  pop() {
+    return new Promise((resolve, reject) => {
+      redisClient.zpopmin(this.name, 1, (err, reply) => {
+        if(err) return reject(err);
+        if(reply == '') return reject("Have no data more");
 
-  async pop() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let patientsData = await this.model.find().populate('patient');
-        let patients = patientsData.map(patient => patient.patient);
-        let patient = patients.sort((a, b) => {
-          if(a.severity > b.severity) return 1;
-          else return -1;
-        })[0];
-        patient = await Lobby.deleteOne({patient: patient._id});
-
-        resolve(patient);
-      } catch (error) {
-        reject(error);      
-      }
+        const data = reply[0];
+        return resolve(JSON.parse(data));
+      });
     })
   }
 
   async isEmpty() {
-    const patients = await this.model.find();
-    if(patients.length === 0) return true;
-    return false;
+    return (await this.get()).length === 0;
   }
 }
 
-module.exports = new LobbyQueue(Lobby);
+module.exports = new LobbyQueue();

@@ -9,16 +9,14 @@ const examinateMedical = async (req, res, next) => {
   }
 
   try {
-    const patient = await Patient.create({
+    const patient = await Lobby.add({
       ...req.body,
       image: imagePath
     });
-    await Lobby.push({ patient : patient._id});
 
-    const data = patient;
     res.status(200).json({
       status: 'success',
-      data
+      data: patient
     })
   } catch (error) {
     next(error);   
