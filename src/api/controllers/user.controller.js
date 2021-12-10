@@ -6,7 +6,7 @@ const getUsers = async(req, res, next) => {
   
     res.status(200).json({
       status: 'success',
-      data: {users}
+      data: [ ...users ]
     })
   } catch(err) {
     next(err);
@@ -26,7 +26,7 @@ const getCurrentUser = async(req, res, next) => {
       return next(err);
     }
 
-    const user = await User.find({_id: userId}, '-password -__v');
+    const user = await User.findOne({_id: userId}, '-password -__v');
 
     // have no user
     if(!user) {
@@ -35,9 +35,10 @@ const getCurrentUser = async(req, res, next) => {
       return next(err);
     }
 
+    const data = user;
     return res.status(200).json({
       status: 'success',
-      data: {user} 
+      data
     })
 
   } else {
@@ -49,10 +50,11 @@ const getUser = async (req, res, next) => {
   try {
     const {userId} = req.params;
     const user = await User.findOne({_id : userId}, '-password -__v');
+    const data = user;
   
     res.status(200).json({
       status: 'success',
-      data: {user}
+      data
     })
   } catch(err) {
     next(err);

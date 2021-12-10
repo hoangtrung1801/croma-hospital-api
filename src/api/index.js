@@ -3,12 +3,14 @@ const router = express.Router();
 
 const userRouter = require('./routes/user.route');
 const authRouter = require('./routes/auth.route');
+const patientRouter = require('./routes/patient.route');
+const lobbyRouter = require('./routes/lobby.route');
 
 const verifyAuthorization = require('./middlewares/verifyAuthorization');
 
 router.use(verifyAuthorization);
 
-router.get('/', (req, res) => {
+router.get('/', async  (req, res) => {
   let role = 'patient';
   if(res.locals.user) {
     role = res.locals.user.role;
@@ -18,5 +20,7 @@ router.get('/', (req, res) => {
 
 router.use('/user', userRouter);
 router.use('/auth', authRouter);
+router.use('/patient', patientRouter);
+router.use('/lobby', lobbyRouter);
 
 module.exports = router;
