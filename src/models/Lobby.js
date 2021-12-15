@@ -1,11 +1,8 @@
 const { nanoid } = require('nanoid');
 const redis = require('redis');
 const redisClient = redis.createClient();
-const commands = require('redis-commands');
 
-redisClient.on('subscribe', (channel) => console.log("Subscribed " + channel));
-
-class LobbyQueue {
+class Lobby {
   constructor(name) {
     this.name = name || 'lobby';
   }
@@ -57,4 +54,4 @@ class LobbyQueue {
   }
 }
 
-module.exports = new LobbyQueue();
+module.exports = new Lobby();
