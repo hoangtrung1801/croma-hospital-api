@@ -32,6 +32,10 @@ const patientSchema = new mongoose.Schema({
   },
   medicalHistory: {
     type: String,
+  }, 
+  disease: {
+    type: mongoose.Types.ObjectId,
+    required: [true, "Please enter disease"]
   }
 })
 

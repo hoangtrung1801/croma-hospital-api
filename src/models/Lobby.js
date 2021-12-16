@@ -1,4 +1,4 @@
-const { nanoid } = require('nanoid');
+// const { nanoid } = require('nanoid');
 const redis = require('redis');
 const redisClient = redis.createClient();
 
@@ -25,9 +25,9 @@ class Lobby {
         if(!severity) return reject("Patient need enter a severity");
 
         // add id
-        if(!data._id) {
-          data._id = nanoid();
-        }
+        // if(!data._id) {
+        //   data._id = nanoid();
+        // }
 
         redisClient.zadd(this.name, severity, JSON.stringify(data));
         return resolve(data);
