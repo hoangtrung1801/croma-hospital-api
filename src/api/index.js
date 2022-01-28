@@ -6,6 +6,7 @@ const authRouter = require('./routes/auth.route');
 const patientRouter = require('./routes/patient.route');
 const lobbyRouter = require('./routes/lobby.route');
 const doctorRouter = require('./routes/doctor.route');
+const roomRouter = require('./routes/room.route');
 
 const verifyAuthorization = require('./middlewares/verifyAuthorization');
 
@@ -24,5 +25,6 @@ router.use('/auth', authRouter);
 router.use('/patient', patientRouter);
 router.use('/lobby', lobbyRouter);
 router.use('/doctor', doctorRouter);
+router.use('/room', roomRouter);
 
 module.exports = router;
