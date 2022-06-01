@@ -5,3 +5,5 @@ node_modules
 app.test.js
 
 src/public/images/*
+
+*.pdf
