@@ -31,7 +31,7 @@ yarn install
 ```
 + Install redis and run it
 ```sh
-redis-cli
+redis-server
 ```
 + Run
 ```sh
